@@ -53,67 +53,67 @@ namespace ShadowOfWar
 
                 if (confirm == true)
                 {
-                ImGui.Begin("Shadow of War");
-                ImGui.SetWindowSize(new Vector2(300, 215));
+                    ImGui.Begin("Shadow of War");
+                    ImGui.SetWindowSize(new Vector2(300, 215));
 
-                if (ImGui.BeginTabBar("Shadow of War"))
-                {
-                    if (ImGui.BeginTabItem("Cheats"))
+                    if (ImGui.BeginTabBar("Shadow of War"))
                     {
-                        ImGui.Checkbox("Infinite Arrows", ref Arrows);
-                        ImGui.Checkbox("Infinite Focus", ref focus);
-                        ImGui.Checkbox("GodMode", ref Health);
-                        ImGui.EndTabItem();
+                        if (ImGui.BeginTabItem("Cheats"))
+                        {
+                            ImGui.Checkbox("Infinite Arrows", ref Arrows);
+                            ImGui.Checkbox("Infinite Focus", ref focus);
+                            ImGui.Checkbox("GodMode", ref Health);
+                            ImGui.EndTabItem();
+                        }
+
+                        if (ImGui.BeginTabItem("Stats"))
+                        {
+                            ImGui.Text("Player Stats:");
+                            ImGui.Text($"Health = {swed.ReadFloat(health).ToString()}");
+                            ImGui.Text($"Arrows = {swed.ReadInt(Arrow).ToString()}");
+                            ImGui.Text($"Focus = {swed.ReadFloat(Focus).ToString()}");
+                            ImGui.EndTabItem();
+                        }
+
+                        if (ImGui.BeginTabItem("Customize"))
+                        {
+                            ImGui.Text("Select Background Color:");
+                            ImGui.ColorEdit4("Background", ref backgroundColor);
+
+                            ImGui.PushStyleColor(ImGuiCol.WindowBg, backgroundColor);
+
+                            ImGui.Text("Select Text Color:");
+                            ImGui.ColorEdit4("TextColor", ref textColor);
+
+                            ImGui.PushStyleColor(ImGuiCol.Text, textColor);
+
+                            ImGui.Text("Select Border Color:");
+                            ImGui.ColorEdit4("BorderColor", ref border);
+
+                            ImGui.PushStyleColor(ImGuiCol.Border, border);
+
+                            ImGui.Text("Adjust Border Size:");
+                            ImGui.SliderFloat("Border Size", ref borderSize, 0.0f, 10.0f, "%.1f");
+
+                            ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, borderSize);
+
+                            ImGui.EndTabItem();
+                        }
+
+                        ImGui.EndTabBar();
                     }
+                    ImGui.End();
 
-                    if (ImGui.BeginTabItem("Stats"))
-                    {
-                        ImGui.Text("Player Stats:");
-                        ImGui.Text($"Health = {swed.ReadFloat(health).ToString()}");
-                        ImGui.Text($"Arrows = {swed.ReadInt(Arrow).ToString()}");
-                        ImGui.Text($"Focus = {swed.ReadFloat(Focus).ToString()}");
-                        ImGui.EndTabItem();
-                    }
+                    if (Arrows)
+                        swed.WriteBytes(Arrow, "90 90 90 90 90 90");
 
-                    if (ImGui.BeginTabItem("Customize"))
-                    {
-                        ImGui.Text("Select Background Color:");
-                        ImGui.ColorEdit4("Background", ref backgroundColor);
+                    if (Health)
+                        swed.WriteFloat(health, 100000F);
 
-                        ImGui.PushStyleColor(ImGuiCol.WindowBg, backgroundColor);
-
-                        ImGui.Text("Select Text Color:");
-                        ImGui.ColorEdit4("TextColor", ref textColor);
-
-                        ImGui.PushStyleColor(ImGuiCol.Text, textColor);
-
-                        ImGui.Text("Select Border Color:");
-                        ImGui.ColorEdit4("BorderColor", ref border);
-
-                        ImGui.PushStyleColor(ImGuiCol.Border, border);
-
-                        ImGui.Text("Adjust Border Size:");
-                        ImGui.SliderFloat("Border Size", ref borderSize, 0.0f, 10.0f, "%.1f");
-
-                        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, borderSize);
-
-                        ImGui.EndTabItem();
-                    }
-
-                    ImGui.EndTabBar();
+                    if (focus)
+                        swed.WriteFloat(Focus, 10000F);
                 }
-                ImGui.End();
-
-                if (Arrows)
-                    swed.WriteBytes(Arrow, "90 90 90 90 90 90");
-
-                if (Health)
-                    swed.WriteFloat(health, 100000F);
-
-                if (focus)
-                    swed.WriteFloat(Focus, 10000F);
             }
-        }
         }
 
         public static void Main(string[] args)
